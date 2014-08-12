@@ -1,4 +1,4 @@
 commons
 =======
 
-A compositive toolkit use for my developement
+A compositive toolkit used for my developement
