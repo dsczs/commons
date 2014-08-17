@@ -3,7 +3,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven'
 
 sourceCompatibility = 1.7
-version = '1.0.2'
+version = '1.0.3'
 
 ext.versions = [
 	joda: '2.3',
@@ -80,6 +80,7 @@ uploadArchives {
 			pom.groupId = "com.penglecode"
             pom.version = version
             pom.artifactId = project.name
+			pom.packaging = 'jar'
 	 	}
     }
 }
