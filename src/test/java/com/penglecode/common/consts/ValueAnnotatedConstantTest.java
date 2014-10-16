@@ -11,10 +11,11 @@ public class ValueAnnotatedConstantTest {
 
 	@Test
 	public void test1(){
-		System.out.println(GlobalConstants.APPLICATION_CONTEXT.VALUE());
-		System.out.println(RpcConstants.USER_CENTER_URL.VALUE());
-		System.out.println(RpcConstants.USER_CENTER_URLS.VALUE());
-		System.out.println(RpcConstants.RPC_TIMEOUT.VALUE());
+		System.out.println(GlobalConstants.APPLICATION_CONTEXT);
+		System.out.println(RpcConstants.USER_CENTER_URL);
+		System.out.println(RpcConstants.USER_CENTER_URLS);
+		System.out.println(RpcConstants.RPC_TIMEOUT);
+		System.out.println(PaymentEnum.PAYMENT_ALIPAY.getVendor() + " , " + PaymentEnum.PAYMENT_ALIPAY.getPayUrl());
 	}
 	
 }

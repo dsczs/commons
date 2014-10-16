@@ -10,6 +10,11 @@
     </context:component-scan>
 
 	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+		<property name="converters">
+			<list>
+				<bean class="com.penglecode.common.consts.StringToPaymentEnumConverter"/>
+			</list>
+		</property>
     </bean>
 
 	<!-- 全局属性源 -->

@@ -16,7 +16,7 @@ import java.util.Locale;
  */
 public class Messages {
 
-    public static final Locale DEFAULT_LOCALE = GlobalConstants.SYSTEM_DEFAULT_LOCALE.VALUE();
+    public static final Locale DEFAULT_LOCALE = GlobalConstants.SYSTEM_DEFAULT_LOCALE;
 
     private static AbstractMessageSource messageSource;
 

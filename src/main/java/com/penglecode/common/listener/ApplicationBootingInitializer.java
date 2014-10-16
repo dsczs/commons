@@ -26,7 +26,7 @@ public class ApplicationBootingInitializer extends AbstractApplicationInitialize
     	if(applicationContext instanceof WebApplicationContext && applicationContext.getParent() != null){//如果当前applicationContext是容器环境下SpringMVC Application上下文 
     		rootApplicationContext = applicationContext.getParent();
     	}
-    	applyConstantValue(GlobalConstants.APPLICATION_CONTEXT, rootApplicationContext);
+    	setFinalFieldValue(GlobalConstants.class, "APPLICATION_CONTEXT", rootApplicationContext);
     	try {
 			Messages.setMessageSource(rootApplicationContext.getBean(AbstractMessageSource.class));
 		} catch (Exception e) {

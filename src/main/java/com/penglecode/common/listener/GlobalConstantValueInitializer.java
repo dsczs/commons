@@ -11,15 +11,14 @@ import org.springframework.util.Assert;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.AbstractPropertyResolver;
 
-import com.penglecode.common.consts.AbstractConstants.Constant;
 import com.penglecode.common.util.ClassScanningUtils;
 import com.penglecode.common.util.ClassUtils;
 import com.penglecode.common.util.CollectionUtils;
-import com.penglecode.common.util.ReflectionUtils;
 
 /**
  * 全局常量值注入处理器,
  * 即从properties属性配置文件中将相应的配置通过@Value注解注入到public static final的常量字段上去,
+ * 
  * 使用示例1(应用于普通常量)：
  * 
  * //该URLConstants无需作为一个bean被Spring托管
@@ -32,6 +31,39 @@ import com.penglecode.common.util.ReflectionUtils;
  *		public static final Constant<String> ORDER_CENTER_SERVER_URL = valueOf(null);
  * 		
  * 		...
+ * }
+ * 
+ * 使用示例2(应用于枚举常量)：
+ * 
+ * public enum PaymentEnum {
+ *		
+ *		//需要注册一个Spring的类型转换器Converter<String,PaymentEnum>,转换字符值"支付宝::http://www.alipay.com/gateway" -> PaymentEnum.PAYMENT_ALIPAY
+ *		@Value("PAYMENT_ALIPAY::${payment.alipay.vendor}::${payment.alipay.payurl}")
+ *		PAYMENT_ALIPAY;
+ *	
+ *		@Value("${payment.alipay.version}")
+ *		public static final String VERSION_ID = AbstractConstants.valueOf("1.0.0");
+ *	
+ *		private String vendor;
+ *	
+ *		private String payUrl;
+ * }
+ * 
+ * public class StringToPaymentEnumConverter implements Converter<String, PaymentEnum> {
+ *
+ *	public PaymentEnum convert(String source) {
+ *		if(source != null){
+ *			String[] sources = source.split("::");
+ *			if(sources.length == 3){
+ *				PaymentEnum pe = PaymentEnum.valueOf(sources[0]);
+ *				pe.setVendor(sources[1]);
+ *				pe.setPayUrl(sources[2]);
+ *				return pe;
+ *			}
+ *		}
+ *		return null;
+ *	}
+ *
  * }
  * 
  * @author	  	pengpeng
@@ -68,7 +100,6 @@ public class GlobalConstantValueInitializer extends AbstractApplicationInitializ
 		processInject();
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void processInject() throws Exception {
 		Assert.hasLength(basePackage, "Property 'basePackage' must be specified!");
 		Assert.notNull(globalPropertyResolver, "Property 'globalPropertyResolver' must be specified!");
@@ -76,18 +107,16 @@ public class GlobalConstantValueInitializer extends AbstractApplicationInitializ
         if(!CollectionUtils.isEmpty(classNameList)) {
             for(String className : classNameList) {
                 Class<?> clazz = ClassUtils.forName(className, Thread.currentThread().getContextClassLoader());
-                Field[] fields = clazz.getFields();
+                Field[] fields = clazz.getDeclaredFields();
                 if(fields != null) {
                     for(Field field : fields) {
-                    	if(field.isAnnotationPresent(Value.class)){
-                    		if(isConstantField(field) && field.getType().equals(Constant.class)){
-                    			Value valueAnnotation = field.getAnnotation(Value.class);
-                            	String rawValue = valueAnnotation.value();
-                            	rawValue = ignoreUnresolvablePlaceholders ? globalPropertyResolver.resolvePlaceholders(rawValue) : globalPropertyResolver.resolveRequiredPlaceholders(rawValue);
-                            	if(rawValue != null){
-                            		applyConstantValue((Constant)field.get(null), globalPropertyResolver.getConversionService().convert(rawValue, ReflectionUtils.getFieldGenricType(field)));
-                            	}
-                    		}
+                    	if(field.isAnnotationPresent(Value.class) && isConstantField(field)){
+                    		Value valueAnnotation = field.getAnnotation(Value.class);
+                        	String rawValue = valueAnnotation.value();
+                        	rawValue = ignoreUnresolvablePlaceholders ? globalPropertyResolver.resolvePlaceholders(rawValue) : globalPropertyResolver.resolveRequiredPlaceholders(rawValue);
+                        	if(rawValue != null){
+                        		setFinalFieldValue(field, globalPropertyResolver.getConversionService().convert(rawValue, field.getType()));
+                        	}
                     	}
                     }
                 }
@@ -96,7 +125,7 @@ public class GlobalConstantValueInitializer extends AbstractApplicationInitializ
 	}
 	
 	/**
-	 * 修饰符中同时包含public static的即被认为是常量
+	 * 修饰符中同时包含static final修饰符的即被认为是常量
 	 * @param field
 	 * @return
 	 */

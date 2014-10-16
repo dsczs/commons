@@ -2,8 +2,7 @@ package com.penglecode.common.listener;
 
 import java.lang.reflect.Field;
 
-import com.penglecode.common.consts.AbstractConstants;
-import com.penglecode.common.consts.AbstractConstants.Constant;
+import com.penglecode.common.util.FinalFieldUtils;
 import com.penglecode.common.util.ReflectionUtils;
 
 /**
@@ -15,9 +14,17 @@ import com.penglecode.common.util.ReflectionUtils;
  */
 public abstract class AbstractApplicationInitializer implements ApplicationInitializer {
 
-    protected <T> void applyConstantValue(Constant<T> constant, T value) {
-    	Field field = ReflectionUtils.findField(AbstractConstants.Constant.class, "value");
-    	ReflectionUtils.setFieldValue(field, constant, value);
-    }
-    
+	protected void setFinalFieldValue(Field field, Object value) {
+		if(field != null){
+			FinalFieldUtils.setFinalFieldValue(null, field, value);
+		}
+	}
+	
+	protected void setFinalFieldValue(Class<?> targetClass, String fieldName, Object value) {
+		Field field = ReflectionUtils.findField(targetClass, fieldName);
+		if(field != null){
+			FinalFieldUtils.setFinalFieldValue(null, field, value);
+		}
+	}
+	
 }

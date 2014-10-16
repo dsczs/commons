@@ -30,10 +30,10 @@ public class ServletBootingInitializer extends AbstractApplicationInitializer {
     		mvcApplicationContext = (WebApplicationContext) applicationContext;
     		ServletContext servletContext = mvcApplicationContext.getServletContext();
     		logger.info(">>> 初始化应用中依赖于Servlet环境的系统常量!");
-    		applyConstantValue(GlobalConstants.MVC_APPLICATION_CONTEXT, applicationContext);
-    		applyConstantValue(GlobalConstants.SERVLET_CONTEXT, servletContext);
-    		applyConstantValue(GlobalConstants.CONTEXT_PATH, FileUtils.formatFilePath(servletContext.getContextPath()));
-    		applyConstantValue(GlobalConstants.CONTEXT_REAL_PATH, FileUtils.formatFilePath(servletContext.getRealPath("/")));
+    		setFinalFieldValue(GlobalConstants.class, "MVC_APPLICATION_CONTEXT", applicationContext);
+    		setFinalFieldValue(GlobalConstants.class, "SERVLET_CONTEXT", servletContext);
+    		setFinalFieldValue(GlobalConstants.class, "CONTEXT_PATH", FileUtils.formatFilePath(servletContext.getContextPath()));
+    		setFinalFieldValue(GlobalConstants.class, "CONTEXT_REAL_PATH", FileUtils.formatFilePath(servletContext.getRealPath("/")));
     	}
     }
 }
