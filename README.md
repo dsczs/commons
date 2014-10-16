@@ -1,4 +1,4 @@
 commons
 =======
 
-A compositive toolkit used for my developement
+Some java tools used for my developement

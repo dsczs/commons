@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+	
+    <context:component-scan base-package="com.penglecode">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
+
+	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+    </bean>
+
+	<!-- 全局属性源 -->
+    <bean id="globalPropertySources" class="com.penglecode.common.support.GlobalPropertySources">
+		<property name="ignoreResourceNotFound" value="true"/>
+		<property name="fileEncoding" value="UTF-8"/>
+		<property name="locations">
+			<list>
+				<value>classpath:global-config.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 
+		一个全局工具,用于解析占位符形式的属性值,
+		globalPropertyResolver.resolvePlaceholders("${img.domain}${img.domain.sub:defaultIfNotFound}") -> "http://www.xxx.com/img/defaultIfNotFound"
+		globalPropertyResolver.getProperty("img.domain")			-> "http://www.xxx.com/img"
+	 -->
+	<bean id="globalPropertyResolver" class="org.springframework.core.env.PropertySourcesPropertyResolver">
+		<constructor-arg index="0" ref="globalPropertySources"/>
+		<property name="conversionService" ref="conversionService"/>
+	</bean>
+	
+	<!-- 应用中不依赖于Servlet环境的系统常量初始化 -->
+	<bean id="applicationBootingInitializer" class="com.penglecode.common.listener.ApplicationBootingInitializer"/>
+	
+	<!-- 应用中全局常量值由注入的初始化 -->
+	<bean id="globalConstantValueInitializer" class="com.penglecode.common.listener.GlobalConstantValueInitializer">
+		<property name="globalPropertyResolver" ref="globalPropertyResolver"/>
+		<property name="basePackage" value="com.penglecode"/>
+	</bean>
+
+    <!-- Spring ApplicationContext启动监听器 -->
+    <bean id="applicationContextListener"  class="com.penglecode.common.listener.ApplicationContextListener">
+    	<property name="applicationInitializers">
+    		<list>
+    			<ref bean="globalConstantValueInitializer"/>
+    			<ref bean="applicationBootingInitializer"/>
+    		</list>
+    	</property>
+    </bean>
+
+</beans>

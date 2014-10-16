@@ -2,6 +2,8 @@ package com.penglecode.common.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 
 import org.springframework.util.Assert;
@@ -14,6 +16,62 @@ import org.springframework.util.Assert;
  * @version  	1.0
  */
 public class ReflectionUtils {
+	
+	/** 
+     * 获得超类的参数类型，取第一个参数类型 
+     * @param <T> 类型参数 
+     * @param clazz 超类类型 
+     */  
+    @SuppressWarnings("rawtypes")  
+    public static Class<?> getClassGenricType(final Class clazz) {
+        return getClassGenricType(clazz, 0);
+    }
+    
+    /** 
+     * 根据索引获得超类的参数类型 
+     * @param clazz 超类类型 
+     * @param index 索引 
+     */  
+    @SuppressWarnings("rawtypes")  
+    public static Class getClassGenricType(final Class clazz, final int index) {
+    	Assert.notNull(clazz, "Parameter 'clazz' must be not null!");
+    	Assert.state(index > -1, "Parameter 'index' must be > -1!");
+        Type genType = clazz.getGenericSuperclass();  
+        if (!(genType instanceof ParameterizedType)) {  
+            return Object.class;  
+        }  
+        Type[] params = ((ParameterizedType)genType).getActualTypeArguments();  
+        if (index >= params.length || index < 0) {  
+            return Object.class;  
+        }  
+        if (!(params[index] instanceof Class)) {  
+            return Object.class;  
+        }  
+        return (Class) params[index];  
+    }
+    
+    public static Class<?> getFieldGenricType(final Field field) {
+    	return getFieldGenricType(field, 0);
+    }
+    
+    @SuppressWarnings("rawtypes")
+	public static Class getFieldGenricType(final Field field, final int index) {
+    	Assert.notNull(field, "Parameter 'field' must be not null!");
+    	Assert.state(index > -1, "Parameter 'index' must be > -1!");
+    	Type type = field.getGenericType();
+    	if(type instanceof ParameterizedType){
+			ParameterizedType ptype = (ParameterizedType)type;
+			type = ptype.getActualTypeArguments()[index];
+			if(type instanceof ParameterizedType){
+				return (Class)((ParameterizedType) type).getRawType();
+			}else{
+				return (Class) type;
+			}
+		}else{
+			return (Class) type;
+		}
+    }
+    
 	
 	/**
 	 * <p>根据属性字段名称获取@{code java.lang.reflect.Field}</p>

@@ -3,7 +3,7 @@ package com.penglecode.common.support;
 import org.springframework.context.support.AbstractMessageSource;
 import org.springframework.util.Assert;
 
-import com.penglecode.common.consts.ApplicationGlobalConstants;
+import com.penglecode.common.consts.GlobalConstants;
 
 import java.util.Locale;
 
@@ -16,7 +16,7 @@ import java.util.Locale;
  */
 public class Messages {
 
-    public static final Locale DEFAULT_LOCALE = ApplicationGlobalConstants.SYSTEM_DEFAULT_LOCALE.VALUE();
+    public static final Locale DEFAULT_LOCALE = GlobalConstants.SYSTEM_DEFAULT_LOCALE.VALUE();
 
     private static AbstractMessageSource messageSource;
 
