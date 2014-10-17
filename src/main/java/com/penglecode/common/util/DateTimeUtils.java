@@ -90,6 +90,17 @@ public class DateTimeUtils {
 	}
 	
 	/**
+	 * <p>以默认的日期格式(yyyy-MM-dd HH:mm:ss)格式化当前时间</p>
+	 * 
+	 * @param date
+	 * @param pattern
+	 * @return
+	 */
+	public static String formatNow(){
+		return new DateTime(new Date()).toString(DEFAULT_DATETIME_PATTERN);
+	}
+	
+	/**
 	 * <p>将字符串格式的日期转换为@{code java.util.Date}</p>
 	 * 
 	 * @param dateTimeText		- 日期字符串形式的值

@@ -12,54 +12,54 @@ public class Result<T> {
 
     private boolean success;
 
-    private String retCode;
+    private String code;
 
-    private String msg;
+    private String message;
 
-    private T retObj;
+    private T value;
 
-    public Result() {
-        super();
-    }
+	public Result() {
+		super();
+	}
 
-    public Result(boolean success, String retCode, String msg, T retObj) {
-        super();
-        this.success = success;
-        this.retCode = retCode;
-        this.msg = msg;
-        this.retObj = retObj;
-    }
+	public Result(boolean success, String code, String message, T value) {
+		super();
+		this.success = success;
+		this.code = code;
+		this.message = message;
+		this.value = value;
+	}
 
-    public boolean isSuccess() {
-        return success;
-    }
+	public boolean isSuccess() {
+		return success;
+	}
 
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
+	public void setSuccess(boolean success) {
+		this.success = success;
+	}
 
-    public String getRetCode() {
-        return retCode;
-    }
+	public String getCode() {
+		return code;
+	}
 
-    public void setRetCode(String retCode) {
-        this.retCode = retCode;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    public String getMsg() {
-        return msg;
-    }
+	public String getMessage() {
+		return message;
+	}
 
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-    public T getRetObj() {
-        return retObj;
-    }
+	public T getValue() {
+		return value;
+	}
 
-    public void setRetObj(T retObj) {
-        this.retObj = retObj;
-    }
+	public void setValue(T value) {
+		this.value = value;
+	}
 
 }

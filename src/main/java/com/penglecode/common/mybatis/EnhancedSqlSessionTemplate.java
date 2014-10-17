@@ -19,7 +19,7 @@ import com.penglecode.common.support.PaginationUtils;
 import com.penglecode.common.util.CollectionUtils;
 
 /**
- * 该类是{@link #SqlSessionTemplate}的代理类,增加了几个便于开发的方法,如分页查询方法
+ * 该类是{@link #SqlSessionTemplate}的代理类,增加了几个便于开发的方法,如分页查询方法等
  * 
  * @author	  	pengpeng
  * @date	  	2014年6月18日 下午6:26:20
