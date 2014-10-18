@@ -16,18 +16,18 @@ public class Result<T> {
 
     private String message;
 
-    private T value;
+    private T data;
 
 	public Result() {
 		super();
 	}
 
-	public Result(boolean success, String code, String message, T value) {
+	public Result(boolean success, String code, String message, T data) {
 		super();
 		this.success = success;
 		this.code = code;
 		this.message = message;
-		this.value = value;
+		this.data = data;
 	}
 
 	public boolean isSuccess() {
@@ -54,12 +54,12 @@ public class Result<T> {
 		this.message = message;
 	}
 
-	public T getValue() {
-		return value;
+	public T getData() {
+		return data;
 	}
 
-	public void setValue(T value) {
-		this.value = value;
+	public void setData(T data) {
+		this.data = data;
 	}
 
 }
