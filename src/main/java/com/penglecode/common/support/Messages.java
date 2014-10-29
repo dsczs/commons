@@ -53,5 +53,33 @@ public class Messages {
         Assert.hasText(message, "No message found in i18n message resource file for message code '" + code + "'!");
         return message;
     }
+    
+    public static MessageHolder forName(String code) {
+    	return new MessageHolder(code);
+    }
+    
+    public static MessageHolder forName(String code, Object... args) {
+    	return new MessageHolder(code, args);
+    }
+    
+    public static class MessageHolder {
+    	
+    	private String code;
+    	
+    	private Object[] args;
+    	
+    	private MessageHolder(String code){
+    		this.code = code;
+    	}
+    	
+    	private MessageHolder(String code, Object[] args){
+    		this.args = args;
+    	}
+    	
+		public String getMessage(){
+			return Messages.getMessage(code, args);
+		}
+    	
+    }
 
 }

@@ -1,10 +1,11 @@
-package com.penglecode.common.util;
+package com.penglecode.common.support;
 
 import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Map;
 
 import com.penglecode.common.exception.CustomBusinessException;
+import com.penglecode.common.support.Messages.MessageHolder;
 
 /**
  * 数据验证的Assert,所有抛出异常均为{@code CustomBusinessException}
@@ -25,7 +26,8 @@ public class BusinessAssert {
 	}
 	
 	/**
-	 * 对一个boolean表达式进行断言,如果表达式的值为false则抛出CustomBusinessException
+	 * <p>对一个boolean表达式进行断言,如果表达式的值为false则抛出CustomBusinessException</p>
+	 * 
 	 * @param expression
 	 * @param message
 	 */
@@ -39,20 +41,11 @@ public class BusinessAssert {
 	 * <p>对一个boolean表达式进行断言,如果表达式的值为false则抛出CustomBusinessException</p>
 	 * 
 	 * @param expression
+	 * @param messageHolder
 	 */
-	public static void state(boolean expression) {
-		state(expression, "[Assertion failed] - this state invariant must be true!");
-	}
-	
-	/**
-	 * <p>对一个boolean表达式进行断言,如果表达式的值为false则抛出CustomBusinessException</p>
-	 * 
-	 * @param expression
-	 * @param message
-	 */
-	public static void state(boolean expression, String message) {
+	public static void isTrue(boolean expression, MessageHolder messageHolder) {
 		if (!expression) {
-			throw new CustomBusinessException(message);
+			throw new CustomBusinessException(messageHolder.getMessage());
 		}
 	}
 	
@@ -78,6 +71,18 @@ public class BusinessAssert {
 	}
 	
 	/**
+	 * <p>如果object不为null则抛出CustomBusinessException</p>
+	 * 
+	 * @param object
+	 * @param message
+	 */
+	public static void isNull(Object object, MessageHolder messageHolder) {
+		if (object != null) {
+			throw new CustomBusinessException(messageHolder.getMessage());
+		}
+	}
+	
+	/**
 	 * <p>如果object为null则抛出CustomBusinessException</p>
 	 * 
 	 * @param object
@@ -95,6 +100,18 @@ public class BusinessAssert {
 	public static void notNull(Object object, String message) {
 		if (object == null) {
 			throw new CustomBusinessException(message);
+		}
+	}
+	
+	/**
+	 * <p>如果object为null则抛出CustomBusinessException</p>
+	 * 
+	 * @param object
+	 * @param messageHolder
+	 */
+	public static void notNull(Object object, MessageHolder messageHolder) {
+		if (object == null) {
+			throw new CustomBusinessException(messageHolder.getMessage());
 		}
 	}
 	
@@ -120,6 +137,18 @@ public class BusinessAssert {
 	}
 	
 	/**
+	 * <p>如果object不为空值(null, "", " ", "null", empty collection, empty map, empty array)则抛出CustomBusinessException</p>
+	 * 
+	 * @param object
+	 * @param messageHolder
+	 */
+	public static void isEmpty(Object object, MessageHolder messageHolder) {
+		if (!isEmptyObject(object)) {
+			throw new CustomBusinessException(messageHolder.getMessage());
+		}
+	}
+	
+	/**
 	 * <p>如果object为空值(null, "", " ", "null", empty collection, empty map, empty array)则抛出CustomBusinessException</p>
 	 * 
 	 * @param object
@@ -137,6 +166,18 @@ public class BusinessAssert {
 	public static void notEmpty(Object object, String message) {
 		if (isEmptyObject(object)) {
 			throw new CustomBusinessException(message);
+		}
+	}
+	
+	/**
+	 * <p>如果object为空值(null, "", " ", "null", empty collection, empty map, empty array)则抛出CustomBusinessException</p>
+	 * 
+	 * @param object
+	 * @param messageHolder
+	 */
+	public static void notEmpty(Object object, MessageHolder messageHolder) {
+		if (isEmptyObject(object)) {
+			throw new CustomBusinessException(messageHolder.getMessage());
 		}
 	}
 	
@@ -182,6 +223,22 @@ public class BusinessAssert {
 	}
 	
 	/**
+	 * <p>如果数组array中的元素存在null值,则抛出CustomBusinessException</p>
+	 * 
+	 * @param array
+	 * @param messageHolder
+	 */
+	public static void noNullElements(Object[] array, MessageHolder messageHolder) {
+		if (array != null) {
+			for (Object element : array) {
+				if (element == null) {
+					throw new CustomBusinessException(messageHolder.getMessage());
+				}
+			}
+		}
+	}
+	
+	/**
 	 * <p>如果集合collection中的元素存在null值,则抛出CustomBusinessException</p>
 	 * 
 	 * @param array
@@ -201,6 +258,22 @@ public class BusinessAssert {
 			for (Object element : collection) {
 				if (element == null) {
 					throw new CustomBusinessException(message);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * <p>如果集合collection中的元素存在null值,则抛出CustomBusinessException</p>
+	 * 
+	 * @param array
+	 * @param messageHolder
+	 */
+	public static void noNullElements(Collection<?> collection, MessageHolder messageHolder) {
+		if (collection != null) {
+			for (Object element : collection) {
+				if (element == null) {
+					throw new CustomBusinessException(messageHolder.getMessage());
 				}
 			}
 		}
@@ -232,6 +305,22 @@ public class BusinessAssert {
 	}
 	
 	/**
+	 * <p>如果集合map中的元素存在value=null值,则抛出CustomBusinessException</p>
+	 * 
+	 * @param array
+	 * @param messageHolder
+	 */
+	public static void noNullValues(Map<?,?> map, MessageHolder messageHolder) {
+		if (map != null) {
+			for (Map.Entry<?, ?> entry : map.entrySet()) {
+				if (entry.getValue() == null) {
+					throw new CustomBusinessException(messageHolder.getMessage());
+				}
+			}
+		}
+	}
+	
+	/**
 	 * <p>如果集合map中的元素存在key=null值,则抛出CustomBusinessException</p>
 	 * 
 	 * @param array
@@ -251,6 +340,22 @@ public class BusinessAssert {
 			for (Map.Entry<?, ?> entry : map.entrySet()) {
 				if (entry.getKey() == null) {
 					throw new CustomBusinessException(message);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * <p>如果集合map中的元素存在key=null值,则抛出CustomBusinessException</p>
+	 * 
+	 * @param array
+	 * @param messageHolder
+	 */
+	public static void noNullKeys(Map<?,?> map, MessageHolder messageHolder) {
+		if (map != null) {
+			for (Map.Entry<?, ?> entry : map.entrySet()) {
+				if (entry.getKey() == null) {
+					throw new CustomBusinessException(messageHolder.getMessage());
 				}
 			}
 		}
@@ -284,6 +389,20 @@ public class BusinessAssert {
 	}
 	
 	/**
+	 * <p>如果对象obj不是指定的类型type,则抛出CustomBusinessException</p>
+	 * 
+	 * @param type
+	 * @param obj
+	 * @param messageHolder
+	 */
+	public static void isInstanceOf(Class<?> type, Object obj, MessageHolder messageHolder) {
+		notNull(type, "Type to check against must not be null");
+		if (!type.isInstance(obj)) {
+			throw new CustomBusinessException(messageHolder.getMessage());
+		}
+	}
+	
+	/**
 	 * <p>如果subType的父类不是superType,则抛出CustomBusinessException</p>
 	 * 
 	 * @param superType
@@ -307,6 +426,20 @@ public class BusinessAssert {
 		notNull(superType, "Type to check against must not be null");
 		if (subType == null || !superType.isAssignableFrom(subType)) {
 			throw new CustomBusinessException(message);
+		}
+	}
+	
+	/**
+	 * <p>如果subType的父类不是superType,则抛出CustomBusinessException</p>
+	 * 
+	 * @param superType
+	 * @param subType
+	 * @param messageHolder
+	 */
+	public static void isAssignable(Class<?> superType, Class<?> subType, MessageHolder messageHolder) {
+		notNull(superType, "Type to check against must not be null");
+		if (subType == null || !superType.isAssignableFrom(subType)) {
+			throw new CustomBusinessException(messageHolder.getMessage());
 		}
 	}
 	

@@ -6,7 +6,7 @@ package com.penglecode.common.support;
  * @date	  	2014年7月28日 下午9:31:56
  * @version  	1.0
  */
-public class Message {
+public class PageMessage {
 
 	public static final String MESSAGE_CODE_UNKOWN_ERROR = "unkownError";
 	
@@ -18,11 +18,11 @@ public class Message {
 	
 	private String messageText;
 
-	public Message() {
+	public PageMessage() {
 		super();
 	}
 
-	public Message(String messageCode, String messageText) {
+	public PageMessage(String messageCode, String messageText) {
 		super();
 		this.messageCode = messageCode;
 		this.messageText = messageText;
