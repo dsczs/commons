@@ -18,6 +18,7 @@ ext.versions = [
 	fastjson: '1.1.41',
 	mybatis: '3.2.7',
 	mybatisSpring: '1.2.2',
+	mybatisEx: '1.0.0',
 	spring: '3.2.10.RELEASE',
 	servlet: '3.1.0'
 ]
@@ -48,6 +49,7 @@ dependencies {
 		"com.dyuproject.protostuff:protostuff-collectionschema:${versions.protostuff}",
 		"org.mybatis:mybatis:${versions.mybatis}",
 		"org.mybatis:mybatis-spring:${versions.mybatisSpring}",
+		"com.github.penggle:mybatis-ex:${versions.mybatisEx}",
 		
 	    "org.springframework:spring-core:${versions.spring}",
 	    "org.springframework:spring-aop:${versions.spring}",
