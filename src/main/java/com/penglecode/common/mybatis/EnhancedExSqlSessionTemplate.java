@@ -19,28 +19,13 @@ import com.penglecode.mybatis.ex.ExSqlSession;
 import com.penglecode.mybatis.ex.spring.ExSqlSessionTemplate;
 
 /**
- * 该类是{@link #SqlSessionTemplate}的代理类,增加了几个便于开发的方法,如分页查询方法等
+ * 该类是{@link #ExSqlSessionTemplate}的代理类,增加了几个便于开发的方法,如分页查询方法等
  * 
  * @author	  	pengpeng
  * @date	  	2014年6月18日 下午6:26:20
  * @version  	1.0
  */
-public class EnhancedExSqlSessionTemplate implements ExSqlSession {
-
-	/**
-     * <p>
-     * 默认分页总数查询statementKey的后缀
-     * 例如分页查询数据的statementKey为'getXxxxList',则针对该分页的查询总记录数的statementKey一定要以<code>DEFAULT_PAGING_COUNT_STATEMENT_KEY_SUFFIX</code>结尾,例如：
-     * <p/>
-     * <select id="selectMyOrderList" parameterType="java.util.Map" statementType="PREPARED" resultType="OrderInfo">
-     * select * from t_order_info a where a.user_id = #{userId}
-     * </select>
-     * 其分页count的查询statementKey的定义应如下：
-     * <select id="selectMyOrderList_count" parameterType="java.util.Map" statementType="PREPARED" resultType="Integer">
-     * select count(*) from t_order_info a where a.user_id = #{userId}
-     * </select>
-     */
-    public static final String DEFAULT_PAGING_COUNT_STATEMENT_KEY_SUFFIX = "_count";
+public class EnhancedExSqlSessionTemplate implements EnhancedSqlSession {
 
     private final ExSqlSession delegate;
 
@@ -160,22 +145,6 @@ public class EnhancedExSqlSessionTemplate implements ExSqlSession {
 		return delegate.update(statement, parameter);
 	}
 
-	/**
-     * EscapeFilter的作用：对key-value键值对型数据转换,例如：
-     * <p/>
-     * return orderInfoDAO.selectOne(MybatisUtils.getMapperKey(OrderInfo.class, "selectOrderInfoById"), orderId, new EscapeFilter<OrderInfo>() {
-     * 		public void doEscapeFilter(OrderInfo element) {
-     * 			element.setOrderTypeName(OrderTypeEnum.getTypeName(element.getOrderType()));
-     * 			...
-     * 			...
-     * 		}
-     * });
-     *
-     * @param statementKey
-     * @param paramObj
-     * @param escapeFilter
-     * @return
-     */
     public <T> T selectOne(String statementKey, Object paramObj, EscapeFilter<T> escapeFilter) {
         EscapeResultHandler<T> resultHandler = new EscapeResultHandler<T>(escapeFilter);
         delegate.select(statementKey, paramObj, resultHandler);
@@ -188,36 +157,12 @@ public class EnhancedExSqlSessionTemplate implements ExSqlSession {
         throw new TooManyResultsException("Expected one result (or null) to be returned by selectOne(), but found: " + list.size());
     }
     
-    /**
-     * EscapeFilter的作用：对key-value键值对型数据转换,例如：
-     * <p/>
-     * return orderInfoDAO.selectOne(MybatisUtils.getMapperKey(OrderInfo.class, "selectOrderInfoById"), orderId, new EscapeFilter<OrderInfo>() {
-     * 		public void doEscapeFilter(OrderInfo element) {
-     * 			element.setOrderTypeName(OrderTypeEnum.getTypeName(element.getOrderType()));
-     * 			...
-     * 			...
-     * 		}
-     * });
-     *
-     * @param statementKey
-     * @param paramObj
-     * @param escapeFilter
-     * @return
-     */
     public <T> List<T> selectList(String statementKey, Object paramObj, EscapeFilter<T> escapeFilter) {
         EscapeResultHandler<T> resultHandler = new EscapeResultHandler<T>(escapeFilter);
         delegate.select(statementKey, paramObj, resultHandler);
         return resultHandler.getResultList();
     }
 
-    /**
-     * 带分页的查询
-     *
-     * @param statementKey
-     * @param paramObj
-     * @param pager
-     * @return
-     */
     public <T> List<T> selectList(String statementKey, Object paramObj, Pager pager) {
     	Number totalNum = delegate.selectOne(statementKey + DEFAULT_PAGING_COUNT_STATEMENT_KEY_SUFFIX, paramObj);
     	Integer totalRowCount = totalNum.intValue();
@@ -236,15 +181,6 @@ public class EnhancedExSqlSessionTemplate implements ExSqlSession {
         return resultList;
     }
     
-    /**
-     * 带分页的查询
-     *
-     * @param statementKey
-     * @param paramObj
-     * @param escapeFilter
-     * @param pager
-     * @return
-     */
     public <T> List<T> selectList(String statementKey, Object paramObj, EscapeFilter<T> escapeFilter, Pager pager) {
     	Number totalNum = delegate.selectOne(statementKey + DEFAULT_PAGING_COUNT_STATEMENT_KEY_SUFFIX, paramObj);
         Integer totalRowCount = totalNum.intValue();
