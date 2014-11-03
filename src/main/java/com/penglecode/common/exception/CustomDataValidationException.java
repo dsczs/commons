@@ -7,7 +7,7 @@ package com.penglecode.common.exception;
  * @date	  	2014年7月28日 下午2:53:59
  * @version  	1.0
  */
-public class CustomDataValidationException extends RuntimeException {
+public class CustomDataValidationException extends CustomException {
 
 	private static final long serialVersionUID = 1L;
 

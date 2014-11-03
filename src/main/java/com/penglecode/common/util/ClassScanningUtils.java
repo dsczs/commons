@@ -11,7 +11,7 @@ import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.util.Assert;
 
-import com.penglecode.common.exception.AppRuntimeException;
+import com.penglecode.common.exception.NestedAppRuntimeException;
 
 /**
  * 搜索class的工具类
@@ -50,7 +50,7 @@ public class ClassScanningUtils {
 				}
 			}
 		}catch(Exception e) {
-			throw new AppRuntimeException(String.format("Scanning package[%s] class occurred an error!", basePackages), e);
+			throw new NestedAppRuntimeException(String.format("Scanning package[%s] class occurred an error!", basePackages), e);
 		}
 		return result;
 	}

@@ -2,7 +2,7 @@ package com.penglecode.common.util;
 
 import java.io.UnsupportedEncodingException;
 
-import com.penglecode.common.exception.AppRuntimeException;
+import com.penglecode.common.exception.NestedAppRuntimeException;
 
 /**
  * 基本常用类型与字节数组的相互转换工具
@@ -242,7 +242,7 @@ public class ByteArrayUtils {
 		try {
 			return str.getBytes(charset);
 		} catch (UnsupportedEncodingException e) {
-			throw new AppRuntimeException(e.getMessage(), e);
+			throw new NestedAppRuntimeException(e.getMessage(), e);
 		}
 	}
 	
@@ -255,7 +255,7 @@ public class ByteArrayUtils {
 		try {
 			return new String(bytes, charset);
 		} catch (UnsupportedEncodingException e) {
-			throw new AppRuntimeException(e.getMessage(), e);
+			throw new NestedAppRuntimeException(e.getMessage(), e);
 		}
 	}
 	

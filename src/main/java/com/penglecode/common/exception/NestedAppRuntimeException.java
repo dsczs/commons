@@ -9,15 +9,15 @@ import org.springframework.core.NestedRuntimeException;
  * @date	  	2014年7月19日 下午3:35:50
  * @version  	1.0
  */
-public class AppRuntimeException extends NestedRuntimeException {
+public class NestedAppRuntimeException extends NestedRuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	public AppRuntimeException(String msg) {
+	public NestedAppRuntimeException(String msg) {
 		super(msg);
 	}
 	
-	public AppRuntimeException(String msg, Throwable cause) {
+	public NestedAppRuntimeException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
