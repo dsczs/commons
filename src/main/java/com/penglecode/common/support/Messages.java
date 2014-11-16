@@ -73,6 +73,7 @@ public class Messages {
     	}
     	
     	private MessageHolder(String code, Object[] args){
+    		this.code = code;
     		this.args = args;
     	}
     	
