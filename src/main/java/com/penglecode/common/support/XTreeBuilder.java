@@ -10,7 +10,7 @@ import java.util.List;
  * @date	  	2014年7月28日 下午9:46:03
  * @version  	1.0
  */
-public interface XTreeBuilder<I,T> {
+public interface XTreeBuilder<I,T extends Comparable<T>> {
 
 	/**
 	 * <p>

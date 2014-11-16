@@ -1,6 +1,7 @@
 package com.penglecode.common.support;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.util.Assert;
@@ -17,7 +18,7 @@ import com.penglecode.common.util.ObjectUtils;
  * @date	  	2014年7月28日 下午9:48:05
  * @version  	1.0
  */
-public abstract class AbstractXTreeBuilder<I, T> implements XTreeBuilder<I, T> {
+public abstract class AbstractXTreeBuilder<I, T extends Comparable<T>> implements XTreeBuilder<I, T> {
 
 	public String buildJsonTree(I rootTreeObjId, List<T> allTreeObjList, TreeNodeBuilder<T> treeNodeBuilder) {
 		Assert.notNull(rootTreeObjId, "Parameter[rootTreeObjId] can not be empty!");
@@ -60,6 +61,9 @@ public abstract class AbstractXTreeBuilder<I, T> implements XTreeBuilder<I, T> {
 	public void recurisiveLoadChilds(T currentTreeObj, List<T> allTreeObjList) {
 		if(currentTreeObj != null && !CollectionUtils.isEmpty(allTreeObjList)){
 			List<T> directChildList = getDirectChildMenuList(getTreeObjectId(currentTreeObj), allTreeObjList);
+			if(!CollectionUtils.isEmpty(directChildList)){
+				Collections.sort(directChildList);
+			}
 			setSubTreeObjectList(currentTreeObj, directChildList);
 			if(!CollectionUtils.isEmpty(directChildList)){
 				for(T childTreeObj : directChildList){
