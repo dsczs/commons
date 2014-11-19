@@ -112,9 +112,9 @@ public class GlobalConstantValueInitializer extends AbstractApplicationInitializ
                     for(Field field : fields) {
                     	if(field.isAnnotationPresent(Value.class) && isConstantField(field)){
                     		Value valueAnnotation = field.getAnnotation(Value.class);
-                        	String rawValue = valueAnnotation.value();
-                        	rawValue = ignoreUnresolvablePlaceholders ? globalPropertyResolver.resolvePlaceholders(rawValue) : globalPropertyResolver.resolveRequiredPlaceholders(rawValue);
-                        	if(rawValue != null){
+                        	String placeholderValue = valueAnnotation.value();
+                        	String rawValue = ignoreUnresolvablePlaceholders ? globalPropertyResolver.resolvePlaceholders(placeholderValue) : globalPropertyResolver.resolveRequiredPlaceholders(placeholderValue);
+                        	if(rawValue != null && !placeholderValue.equals(rawValue)){
                         		setFinalFieldValue(field, globalPropertyResolver.getConversionService().convert(rawValue, field.getType()));
                         	}
                     	}
