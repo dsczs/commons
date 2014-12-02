@@ -79,8 +79,8 @@ public class TokenInterceptor extends HandlerInterceptorAdapter implements Appli
 				if(token.action() == TokenAction.CREATE){
 					if(keys != null && keys.length > 0){
 						for(String key : keys){
-							String tokenValue = createRandomToken();
-							request.getSession().setAttribute(key, tokenValue);
+							String tokenValue = createTokenValue(request);
+							setTokenValue(request, key, tokenValue);
 							logger.info(">>> create token[{}={}] for current http request[{}]", key, tokenValue, request.getRequestURI());
 						}
 					}
@@ -88,12 +88,12 @@ public class TokenInterceptor extends HandlerInterceptorAdapter implements Appli
 				if(token.action() == TokenAction.CHECK){
 					if(keys != null && keys.length > 0){
 						for(String key : keys){
-							String sessionTokenValue = (String) request.getSession().getAttribute(key);
+							String tokenValue = getTokenValue(request, key);
 							boolean isRepeatSubmit = false;
-							if(sessionTokenValue == null){ //重复提交
+							if(tokenValue == null){ //重复提交
 								logger.error(">>> repeat submit found for current http request[{}]", request.getRequestURI());
 								isRepeatSubmit = true;
-							}else if(!sessionTokenValue.equals(request.getParameter(key))){ //重复提交
+							}else if(!tokenValue.equals(request.getParameter(key))){ //重复提交
 								logger.error(">>> repeat submit found for current http request[{}]", request.getRequestURI());
 								isRepeatSubmit = true;
 							}
@@ -114,15 +114,53 @@ public class TokenInterceptor extends HandlerInterceptorAdapter implements Appli
 		}
 	}
 	
-	protected String createRandomToken(){
+	/**
+	 * 创建token值
+	 * @param request
+	 * @return
+	 */
+	protected String createTokenValue(HttpServletRequest request){
 		String uuid =  UUID.randomUUID().toString();
 		return uuid.replace("-", "");
 	}
 	
+	/**
+	 * 设置新生成的token值
+	 * 例如：设置新生成的token值到HttpSession回话中去,或者放到Memecached缓存中去(分布式情况下)
+	 * @param request
+	 * @param key
+	 * @param tokenValue
+	 */
+	protected void setTokenValue(HttpServletRequest request, String key, String tokenValue){
+		request.getSession().setAttribute(key, tokenValue);
+	}
+	
+	/**
+	 * 获取刚刚设置的token值
+	 * @param request
+	 * @param key
+	 * @return
+	 */
+	protected String getTokenValue(HttpServletRequest request, String key){
+		return (String) request.getSession().getAttribute(key);
+	}
+	
+	/**
+	 * 处理重复提交
+	 * @param request
+	 * @param response
+	 * @param handler
+	 */
 	protected void handleRepeatSubmit(HttpServletRequest request, HttpServletResponse response, Object handler){
 		throw new RepeatSubmitException(getErrorMessage(request));
 	}
 	
+	/**
+	 * 获取错误消息
+	 * 默认：DEFAULT_ERROR_MESSAGE,如果指定了errorMessageCode则根据errorMessageCode从资源文件中找
+	 * @param request
+	 * @return
+	 */
 	protected String getErrorMessage(HttpServletRequest request){
 		if(StringUtils.isEmpty(errorMessageCode)){
 			return DEFAULT_ERROR_MESSAGE;
