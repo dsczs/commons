@@ -440,4 +440,36 @@ public class ArrayUtils {
 		return array;
 	}
 	
+	/**
+	 * 字符串数组转List<Number>
+	 * @param array
+	 * @param targetType
+	 * @return
+	 */
+	public static List<? extends Number> toList(String[] array, Class<? extends Number> targetType) {
+		if(array == null || array.length == 0){
+			return null;
+		}
+		if(targetType == null){
+			throw new IllegalArgumentException("Parameter 'targetType' can not be null!");
+		}
+		List<Number> list = new ArrayList<Number>();
+		for(String s : array){
+			if(targetType == Byte.class){
+				list.add(Byte.valueOf(s));
+			}else if(targetType == Short.class){
+				list.add(Short.valueOf(s));
+			}else if(targetType == Integer.class){
+				list.add(Integer.valueOf(s));
+			}else if(targetType == Long.class){
+				list.add(Long.valueOf(s));
+			}else if(targetType == Float.class){
+				list.add(Float.valueOf(s));
+			}else if(targetType == Double.class){
+				list.add(Double.valueOf(s));
+			}
+		}
+		return list;
+	}
+	
 }

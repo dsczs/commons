@@ -43,7 +43,7 @@ public class ServletContextAttributesInitializer extends AbstractApplicationInit
     	if(applicationContext instanceof WebApplicationContext && applicationContext.getParent() != null){
     		webApplicationContext = (WebApplicationContext) applicationContext;
     		ServletContext servletContext = webApplicationContext.getServletContext();
-    		logger.debug(">>> 初始化Servlet上下文级别的Attribute!");
+    		logger.info(">>> 初始化Servlet上下文级别的Attribute!");
             List<String> classNameList = ClassScanningUtils.scanPackages(basePackage);
             if (!CollectionUtils.isEmpty(classNameList)) {
                 Field modifiersField = Field.class.getDeclaredField("modifiers");
