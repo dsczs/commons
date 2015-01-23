@@ -21,14 +21,14 @@ import org.springframework.util.Assert;
  * @version  	1.0
  */
 @SuppressWarnings("resource")
-public abstract class AbstractSequenceIdGenerator extends AbstractDistributedIdGenerator {
+public abstract class AbstractSequenceIdGenerator<T> implements IdGenerator<T> {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractSequenceIdGenerator.class);
 	
 	private DataSource dataSource;
 	
 	/** 数据库中单独的用于定义各个表或业务所需主键的sequence定义表 */
-	private String sequenceTableName = "sequence";
+	private String sequenceTableName;
 	
 	protected DataSource getDataSource() {
 		return dataSource;

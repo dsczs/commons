@@ -11,19 +11,19 @@ import org.springframework.core.NestedRuntimeException;
  * @date	  	2014年10月17日 下午8:06:15
  * @version  	1.0
  */
-public interface IdGenerator {
+public interface IdGenerator<T> {
 
 	/**
 	 * 生成一个主键
 	 * @return
 	 */
-	public String nextId();
+	public T nextId();
 	
 	/**
 	 * 一次生成多个主键
 	 * @return
 	 */
-	public List<String> nextIds(int batchSize);
+	public List<T> nextIds(int batchSize);
 	
 	public static class KeyGeneratorException extends NestedRuntimeException {
 
