@@ -16,7 +16,7 @@ import org.springframework.util.Assert;
  * @date	  	2014年10月17日 下午9:24:42
  * @version  	1.0
  */
-public class TwitterSnowflakeIdGenerator implements IdGenerator {
+public class TwitterSnowflakeIdGenerator implements IdGenerator<Long> {
 
 	private final static long twepoch = 1288834974657L;
 	// 机器标识位数
@@ -55,15 +55,15 @@ public class TwitterSnowflakeIdGenerator implements IdGenerator {
 		this.datacenterId = datacenterId;
 	}
 
-	public synchronized String nextId() {
-		return String.valueOf(getNextId());
+	public synchronized Long nextId() {
+		return getNextId();
 	}
 	
-	public synchronized List<String> nextIds(int batchSize) {
+	public synchronized List<Long> nextIds(int batchSize) {
 		Assert.isTrue(batchSize > 1, "worker Id can't be less than 1");
-		List<String> list = new ArrayList<String>((int)(batchSize * 1.2));
+		List<Long> list = new ArrayList<Long>((int)(batchSize * 1.2));
 		for(int i = 0; i < batchSize; i++){
-			list.add(String.valueOf(getNextId()));
+			list.add(getNextId());
 		}
 		return list;
 	}
