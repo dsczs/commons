@@ -14,12 +14,16 @@ ext.versions = [
 	slf4j: '1.7.7',
 	logback: '1.1.2',
 	protostuff: '1.0.8',
+	quartz: '2.2.1',
+	jedis: '2.6.2',
+	shiro: '1.2.3',
 	httpclient: '4.3.4',
 	fastjson: '1.1.41',
 	mybatis: '3.2.7',
 	mybatisSpring: '1.2.2',
 	mybatisEx: '1.0.0',
-	spring: '3.2.10.RELEASE',
+	spring: '4.1.4.RELEASE',
+	springDataRedis: '1.4.2.RELEASE',
 	servlet: '3.1.0'
 ]
 
@@ -41,6 +45,13 @@ dependencies {
 	    "org.slf4j:slf4j-api:${versions.slf4j}",
 	    "ch.qos.logback:logback-core:${versions.logback}",
 	    "ch.qos.logback:logback-classic:${versions.logback}",
+		"redis.clients:jedis:${versions.jedis}",
+		"org.apache.shiro:shiro-core:${versions.shiro}",
+		"org.apache.shiro:shiro-web:${versions.shiro}",
+		"org.apache.shiro:shiro-ehcache:${versions.shiro}",
+		"org.apache.shiro:shiro-spring:${versions.shiro}",
+		"org.apache.shiro:shiro-quartz:${versions.shiro}",
+		"org.quartz-scheduler:quartz:${versions.quartz}",
 	    "com.alibaba:fastjson:${versions.fastjson}",
 	    "org.apache.httpcomponents:httpclient:${versions.httpclient}",
 		"com.dyuproject.protostuff:protostuff-core:${versions.protostuff}",
@@ -62,7 +73,7 @@ dependencies {
 	    "org.springframework:spring-tx:${versions.spring}",
 		"org.springframework:spring-web:${versions.spring}",
 		"org.springframework:spring-webmvc:${versions.spring}",
-	    
+		"org.springframework.data:spring-data-redis:${versions.springDataRedis}",
 		
 		"javax.servlet:javax.servlet-api:${versions.servlet}"
     )
