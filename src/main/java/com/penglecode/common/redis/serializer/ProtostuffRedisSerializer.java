@@ -21,7 +21,7 @@ public class ProtostuffRedisSerializer implements RedisSerializer<Object> {
 		if(bytes == null || bytes.length == 0){
 			return null;
 		}
-		return objectSerializer.serialize(bytes);
+		return objectSerializer.deserialize(bytes);
 	}
 
 }

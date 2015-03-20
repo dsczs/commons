@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.web.filter.authz.PermissionsAuthorizationFilter;
 
+import com.penglecode.common.support.Messages;
 import com.penglecode.common.support.Result;
 import com.penglecode.common.util.JsonUtils;
 
@@ -24,6 +25,27 @@ public class GlobalUrlPermissionFilter extends PermissionsAuthorizationFilter {
 
 	public static final String MARK_AJAX_REQUEST = "XMLHttpRequest";
 	
+	private String defaultNoPermissionMessageI18nCode = "message.httpstatus.401";
+	
+	private String defaultNoPermissionMessage = "不好意思，您没有权限访问该资源!";
+	
+	protected String getDefaultNoPermissionMessageI18nCode() {
+		return defaultNoPermissionMessageI18nCode;
+	}
+
+	public void setDefaultNoPermissionMessageI18nCode(
+			String defaultNoPermissionMessageI18nCode) {
+		this.defaultNoPermissionMessageI18nCode = defaultNoPermissionMessageI18nCode;
+	}
+
+	protected String getDefaultNoPermissionMessage() {
+		return defaultNoPermissionMessage;
+	}
+
+	public void setDefaultNoPermissionMessage(String defaultNoPermissionMessage) {
+		this.defaultNoPermissionMessage = defaultNoPermissionMessage;
+	}
+
 	protected boolean isAsynRequest(HttpServletRequest request, HttpServletResponse response) {
 		if(MARK_AJAX_REQUEST.equals(request.getHeader("X-Requested-With"))){
 			return true;
@@ -38,7 +60,7 @@ public class GlobalUrlPermissionFilter extends PermissionsAuthorizationFilter {
 			Result<Object> result = new Result<Object>();
 			result.setCode("401");
 			result.setSuccess(false);
-			result.setMessage("不好意思，您没有权限访问该资源!");
+			result.setMessage(Messages.getMessage(getDefaultNoPermissionMessageI18nCode(), null, getDefaultNoPermissionMessage()));
 			res.setCharacterEncoding("UTF-8");
 			res.setContentType("application/json;charset=UTF-8");
 			PrintWriter out = res.getWriter();
@@ -50,5 +72,5 @@ public class GlobalUrlPermissionFilter extends PermissionsAuthorizationFilter {
 			return super.onAccessDenied(request, response);
 		}
 	}
-
+	
 }

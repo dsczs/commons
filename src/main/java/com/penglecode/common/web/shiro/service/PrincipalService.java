@@ -26,22 +26,10 @@ public interface PrincipalService<T> {
 	public Set<String> getPermissions(T principal);
 	
 	/**
-	 * 根据principal获取当事人的信息(用户名、密码啥的)
+	 * 根据principal获取当事人的信息
 	 * @param principal			- 当事人
 	 * @return
 	 */
 	public T getPrincipalObject(String principal);
 
-	/**
-	 * 清除用户授权缓存
-	 * @param principal
-	 */
-	public void clearCachedAuthorizationInfo(String principal);
-
-	/**
-	 * 清除用户认证缓存
-	 * @param principal
-	 */
-    public void clearCachedAuthenticationInfo(String principal);
-	
 }

@@ -39,10 +39,6 @@ public abstract class AbstractPrincipalRealm<T> extends AuthorizingRealm {
         super.clearCachedAuthenticationInfo(principals);
     }
 
-    public void clearCache(PrincipalCollection principals) {
-        super.clearCache(principals);
-    }
-
     public void clearAllCachedAuthorizationInfo() {
         getAuthorizationCache().clear();
     }

@@ -1,5 +1,6 @@
 package com.penglecode.common.support;
 
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.AbstractMessageSource;
 import org.springframework.util.Assert;
 
@@ -23,6 +24,14 @@ public class Messages {
     public static void setMessageSource(AbstractMessageSource messageSource) {
         Messages.messageSource = messageSource;
     }
+    
+    public static Locale getCurrentLocale() {
+    	Locale locale = LocaleContextHolder.getLocale();
+    	if(locale == null){
+    		locale = DEFAULT_LOCALE;
+    	}
+    	return locale;
+    }
 
     public static String getMessage(String code, Object[] args, String defaultMessage, Locale locale) {
         String message = messageSource.getMessage(code, args, defaultMessage, locale);
@@ -31,25 +40,25 @@ public class Messages {
     }
 
     public static String getMessage(String code, Object[] args, String defaultMessage) {
-        String message = messageSource.getMessage(code, args, defaultMessage, DEFAULT_LOCALE);
+        String message = messageSource.getMessage(code, args, defaultMessage, getCurrentLocale());
         Assert.hasText(message, "No message found in i18n message resource file!");
         return message;
     }
 
     public static String getMessage(String code, Object[] args) {
-        String message = messageSource.getMessage(code, args, "", DEFAULT_LOCALE);
+        String message = messageSource.getMessage(code, args, "", getCurrentLocale());
         Assert.hasText(message, "No message found in i18n message resource file!");
         return message;
     }
 
     public static String getMessage(String code, String args0) {
-        String message = messageSource.getMessage(code, new Object[]{args0}, "", DEFAULT_LOCALE);
+        String message = messageSource.getMessage(code, new Object[]{args0}, "", getCurrentLocale());
         Assert.hasText(message, "No message found in i18n message resource file!");
         return message;
     }
 
     public static String getMessage(String code) {
-        String message = messageSource.getMessage(code, null, "", DEFAULT_LOCALE);
+        String message = messageSource.getMessage(code, null, "", getCurrentLocale());
         Assert.hasText(message, "No message found in i18n message resource file for message code '" + code + "'!");
         return message;
     }
