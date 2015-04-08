@@ -1,9 +1,5 @@
 package com.penglecode.common.web.shiro.realm;
 
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
@@ -26,10 +22,6 @@ public abstract class AbstractPrincipalRealm<T> extends AuthorizingRealm {
 	public void setPrincipalService(PrincipalService<T> principalService) {
 		this.principalService = principalService;
 	}
-
-	protected abstract AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals);
-
-	protected abstract AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException;
 
     public void clearCachedAuthorizationInfo(PrincipalCollection principals) {
         super.clearCachedAuthorizationInfo(principals);

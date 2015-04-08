@@ -9,8 +9,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.alibaba.fastjson.TypeReference;
-import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 public class JsonUtilsTest {
 
@@ -126,7 +125,6 @@ class Person {
 	
 	private double weight;
 	
-	@JSONField(name="birthDay", format="yyyy-MM-dd")
 	private Date birthday;
 	
 	private List<Address> addresses;

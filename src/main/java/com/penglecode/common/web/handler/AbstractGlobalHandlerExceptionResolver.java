@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -61,7 +62,11 @@ public abstract class AbstractGlobalHandlerExceptionResolver extends AbstractHan
 	protected boolean isAsyncRequest(HttpServletRequest request, HttpServletResponse response, Object handler){
 		HandlerMethod handlerMethod = (HandlerMethod) handler;
 		ResponseBody responseBodyAnnotation = handlerMethod.getMethodAnnotation(ResponseBody.class);
-		return responseBodyAnnotation != null;
+		boolean isAsync = responseBodyAnnotation != null;
+		if(!isAsync){
+			isAsync = ResponseEntity.class.equals(handlerMethod.getMethod().getReturnType());
+		}
+		return isAsync;
 	}
 	
 	/**
