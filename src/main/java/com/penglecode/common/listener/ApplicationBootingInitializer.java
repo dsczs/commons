@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractMessageSource;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.penglecode.common.consts.GlobalConstants;
+import com.penglecode.common.consts.CommonConstants;
 import com.penglecode.common.support.Messages;
 
 /**
@@ -26,7 +26,7 @@ public class ApplicationBootingInitializer extends AbstractApplicationInitialize
     	if(applicationContext instanceof WebApplicationContext && applicationContext.getParent() != null){//如果当前applicationContext是容器环境下SpringMVC Application上下文 
     		rootApplicationContext = applicationContext.getParent();
     	}
-    	setFinalFieldValue(GlobalConstants.class, "APPLICATION_CONTEXT", rootApplicationContext);
+    	setFinalFieldValue(CommonConstants.class, "APPLICATION_CONTEXT", rootApplicationContext);
     	try {
 			Messages.setMessageSource(rootApplicationContext.getBean(AbstractMessageSource.class));
 		} catch (Exception e) {

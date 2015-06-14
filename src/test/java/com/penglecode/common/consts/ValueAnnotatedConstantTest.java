@@ -11,7 +11,7 @@ public class ValueAnnotatedConstantTest {
 
 	@Test
 	public void test1(){
-		System.out.println(GlobalConstants.APPLICATION_CONTEXT);
+		System.out.println(CommonConstants.APPLICATION_CONTEXT);
 		System.out.println(RpcConstants.USER_CENTER_URL);
 		System.out.println(RpcConstants.USER_CENTER_URLS);
 		System.out.println(RpcConstants.RPC_TIMEOUT);

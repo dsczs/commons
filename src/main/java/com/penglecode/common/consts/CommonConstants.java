@@ -13,7 +13,7 @@ import org.springframework.context.ApplicationContext;
  * @date	  	2014年10月16日 上午11:02:27
  * @version  	1.0
  */
-public abstract class GlobalConstants extends AbstractConstants {
+public abstract class CommonConstants extends AbstractConstants {
 
 	/**
 	 * Spring的ROOT上下文,由@{link org.springframework.web.context.ContextLoaderListener}加载出来的spring上下文

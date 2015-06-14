@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.penglecode.common.consts.GlobalConstants;
+import com.penglecode.common.consts.CommonConstants;
 import com.penglecode.common.util.FileUtils;
 
 
@@ -30,10 +30,10 @@ public class ServletBootingInitializer extends AbstractApplicationInitializer {
     		mvcApplicationContext = (WebApplicationContext) applicationContext;
     		ServletContext servletContext = mvcApplicationContext.getServletContext();
     		logger.info(">>> 初始化应用中依赖于Servlet环境的系统常量!");
-    		setFinalFieldValue(GlobalConstants.class, "MVC_APPLICATION_CONTEXT", applicationContext);
-    		setFinalFieldValue(GlobalConstants.class, "SERVLET_CONTEXT", servletContext);
-    		setFinalFieldValue(GlobalConstants.class, "CONTEXT_PATH", FileUtils.formatFilePath(servletContext.getContextPath()));
-    		setFinalFieldValue(GlobalConstants.class, "CONTEXT_REAL_PATH", FileUtils.formatFilePath(servletContext.getRealPath("/")));
+    		setFinalFieldValue(CommonConstants.class, "MVC_APPLICATION_CONTEXT", applicationContext);
+    		setFinalFieldValue(CommonConstants.class, "SERVLET_CONTEXT", servletContext);
+    		setFinalFieldValue(CommonConstants.class, "CONTEXT_PATH", FileUtils.formatFilePath(servletContext.getContextPath()));
+    		setFinalFieldValue(CommonConstants.class, "CONTEXT_REAL_PATH", FileUtils.formatFilePath(servletContext.getRealPath("/")));
     	}
     }
 }
