@@ -1,7 +1,6 @@
 package com.penglecode.common.web.interceptor;
 
 import java.lang.reflect.Method;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,7 +38,9 @@ public class TokenInterceptor extends HandlerInterceptorAdapter implements Appli
 	
 	private String errorMessageCode;
 	
-	public ViewResolver getViewResolver() {
+	private TokenValueDAO tokenValueDAO = new DefaultTokenValueDAO();
+	
+	protected ViewResolver getViewResolver() {
 		return viewResolver;
 	}
 
@@ -47,7 +48,7 @@ public class TokenInterceptor extends HandlerInterceptorAdapter implements Appli
 		this.viewResolver = viewResolver;
 	}
 
-	public String getErrorMessageCode() {
+	protected String getErrorMessageCode() {
 		return errorMessageCode;
 	}
 
@@ -55,7 +56,7 @@ public class TokenInterceptor extends HandlerInterceptorAdapter implements Appli
 		this.errorMessageCode = errorMessageCode;
 	}
 
-	public ApplicationContext getApplicationContext() {
+	protected ApplicationContext getApplicationContext() {
 		return applicationContext;
 	}
 
@@ -67,6 +68,14 @@ public class TokenInterceptor extends HandlerInterceptorAdapter implements Appli
 
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
+	}
+
+	protected TokenValueDAO getTokenValueDAO() {
+		return tokenValueDAO;
+	}
+
+	public void setTokenValueDAO(TokenValueDAO tokenValueDAO) {
+		this.tokenValueDAO = tokenValueDAO;
 	}
 
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -103,7 +112,7 @@ public class TokenInterceptor extends HandlerInterceptorAdapter implements Appli
 							}
 						}
 						for(String key : keys){
-							request.getSession().removeAttribute(key);
+							removeTokenValue(request, key);
 						}
 					}
 				}
@@ -120,8 +129,7 @@ public class TokenInterceptor extends HandlerInterceptorAdapter implements Appli
 	 * @return
 	 */
 	protected String createTokenValue(HttpServletRequest request){
-		String uuid =  UUID.randomUUID().toString();
-		return uuid.replace("-", "");
+		return getTokenValueDAO().createTokenValue(request);
 	}
 	
 	/**
@@ -129,10 +137,10 @@ public class TokenInterceptor extends HandlerInterceptorAdapter implements Appli
 	 * 例如：设置新生成的token值到HttpSession回话中去,或者放到Memecached缓存中去(分布式情况下)
 	 * @param request
 	 * @param key
-	 * @param tokenValue
+	 * @param value
 	 */
-	protected void setTokenValue(HttpServletRequest request, String key, String tokenValue){
-		request.getSession().setAttribute(key, tokenValue);
+	protected void setTokenValue(HttpServletRequest request, String key, String value){
+		getTokenValueDAO().setTokenValue(request, key, value);
 	}
 	
 	/**
@@ -142,7 +150,16 @@ public class TokenInterceptor extends HandlerInterceptorAdapter implements Appli
 	 * @return
 	 */
 	protected String getTokenValue(HttpServletRequest request, String key){
-		return (String) request.getSession().getAttribute(key);
+		return getTokenValueDAO().getTokenValue(request, key);
+	}
+	
+	/**
+	 * 删除token值
+	 * @param request
+	 * @param key
+	 */
+	protected void removeTokenValue(HttpServletRequest request, String key){
+		getTokenValueDAO().removeTokenValue(request, key);
 	}
 	
 	/**

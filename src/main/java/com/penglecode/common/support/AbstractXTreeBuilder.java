@@ -20,6 +20,16 @@ import com.penglecode.common.util.ObjectUtils;
  */
 public abstract class AbstractXTreeBuilder<I, T extends Comparable<T>> implements XTreeBuilder<I, T> {
 
+	private String jsonChildPropertyName = "children";
+	
+	protected String getJsonChildPropertyName() {
+		return jsonChildPropertyName;
+	}
+
+	public void setJsonChildPropertyName(String jsonChildPropertyName) {
+		this.jsonChildPropertyName = jsonChildPropertyName;
+	}
+
 	public String buildJsonTree(I rootTreeObjId, List<T> allTreeObjList, TreeNodeBuilder<T> treeNodeBuilder) {
 		Assert.notNull(rootTreeObjId, "Parameter[rootTreeObjId] can not be empty!");
 		List<T> rootLevelTreeObjList = buildObjectTree(rootTreeObjId, allTreeObjList);
@@ -91,7 +101,7 @@ public abstract class AbstractXTreeBuilder<I, T extends Comparable<T>> implement
 			}else{
 				sb.append("{");
 				treeNodeBuilder.build4Folder(currentTreeObj, sb);
-				sb.append(",children:[");
+				sb.append("," + getJsonChildPropertyName() + ":[");
 				for(T treeObj : subTreeObjectList){
 					recurisiveLoadJsonTree(treeObj, treeNodeBuilder, sb);
 				}

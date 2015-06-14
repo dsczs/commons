@@ -1,5 +1,6 @@
 package com.penglecode.common.web.shiro.realm;
 
+import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
@@ -11,15 +12,15 @@ import com.penglecode.common.web.shiro.service.PrincipalService;
  * @date	  	2015年1月30日 上午9:38:46
  * @version  	1.0
  */
-public abstract class AbstractPrincipalRealm<T> extends AuthorizingRealm {
+public abstract class AbstractPrincipalRealm<P,R> extends AuthorizingRealm {
 
-	private PrincipalService<T> principalService;
+	private PrincipalService<P,R> principalService;
 	
-	public PrincipalService<T> getPrincipalService() {
+	public PrincipalService<P,R> getPrincipalService() {
 		return principalService;
 	}
 
-	public void setPrincipalService(PrincipalService<T> principalService) {
+	public void setPrincipalService(PrincipalService<P,R> principalService) {
 		this.principalService = principalService;
 	}
 
@@ -44,4 +45,8 @@ public abstract class AbstractPrincipalRealm<T> extends AuthorizingRealm {
         clearAllCachedAuthorizationInfo();
     }
 	
+    public AuthorizationInfo getAuthorizationInfo(PrincipalCollection principals) {
+    	return super.getAuthorizationInfo(principals);
+    }
+    
 }

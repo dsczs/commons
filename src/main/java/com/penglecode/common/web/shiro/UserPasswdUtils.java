@@ -1,4 +1,4 @@
-package com.penglecode.common.util;
+package com.penglecode.common.web.shiro;
 
 import org.apache.shiro.crypto.hash.SimpleHash;
 
